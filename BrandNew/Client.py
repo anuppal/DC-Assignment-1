@@ -6,6 +6,8 @@ def main():
     # SERVER1_HOST = '127.0.0.1'
     # SERVER1_PORT = 12344
 
+    # AF_INET refers to the address-family ipv4
+
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((host, port))
 

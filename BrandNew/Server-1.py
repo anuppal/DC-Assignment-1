@@ -11,14 +11,31 @@ def send_file(connection, filename):
     except FileNotFoundError:
         connection.send(b'File not found')
 
+# def compare_files(file1 , file2):
+#     with open(file1, 'rb') as f1, open(file2, 'rb') as f2:
+#         content1 = f1.read()
+#         content2 = f2.read()
+#         if content1 == content2:
+#             return "Files are Identical"
+#         else:
+#             return "Files are different"
+
 def compare_files(file1 , file2):
     with open(file1, 'rb') as f1, open(file2, 'rb') as f2:
-        content1 = f1.read()
-        content2 = f2.read()
-        if content1 == content2:
-            return "Files are Identical"
-        else:
-            return "Files are different"
+        content1 = f1.readlines()
+        content2 = f2.readlines()
+
+        # Check if the number of lines is different
+        if len(content1) != len(content2):
+            return False
+        
+        # Compare each line
+        for line_num, (line1, line2) in enumerate(zip(content1, content2)):
+            if line1 != line2:
+                print(f"Difference found at line {line_num + 1}:\n")
+                print(f"File 1: {line1.strip()}\n")
+                print(f"File 2: {line2.strip()}\n")
+                return False
 
 def split_filename_from_path(filepath):
     # Use os.path.basename to get the filename from the path
@@ -58,14 +75,14 @@ def main():
 
             # Receive the file from SERVER 2 and send it to the client
             data = server2_socket.recv(1024)
-            data1 = server2_socket.recv(1024).decode('utf-8')
+            #data1 = server2_socket.recv(1024).decode('utf-8')
             if data == b'File not found':
                 client_connection.send(b'File not found')
             else:
                 # client_connection.send(data)
 
-                # a = split_filename_from_path(pathname)
-                # b = split_filename_from_path(data)
+                a = split_filename_from_path(pathname)
+                b = split_filename_from_path(data)
 
                 result = compare_files(pathname,data)
 

@@ -38,6 +38,7 @@ def main():
             client_connection.send(pathname.encode('utf-8'))
         else:
             print(f"File '{pathname}' not found on Server 2. Sending request to Server 1.")
+            send_file(client_connection, pathname)
             client_connection.send(b'File not found')
             # # Forward the request to SERVER 2
             # server2_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
